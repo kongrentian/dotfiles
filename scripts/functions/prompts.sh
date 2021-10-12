@@ -15,135 +15,114 @@ calculate_bash_command() {
 # after prompt
 get_preexec_message() {
 
+    export IFS=$'\n'
+
     local date=$(date "+%H:%M:%S:${TRAP_DEBUG_TIME_START/*./}")
-    local start_time=(
-        $(prompt_rectangle "${date}" "${GC_33}")
-    )
+    local time_wrapper="$(prompt_element "${date}" 1 "${GC_43}")"
+    local time_element="$(prompt_element "${date}" 0 "${GC_43}")"
     
     local output=(
-        "${start_time[0]}"
-        "${start_time[1]}"
-        "${start_time[2]}"
+        "${time_wrapper}"
+        "${time_element}"
+        "${time_wrapper}"
     )
     
-    echo "$(array_join $'\n' "${output[@]}")"
+    echo "${output[*]}"
 
 }
 
 # before prompt
 get_precmd_message() {
 
+    export IFS=$'\n'
+
     local time_elapsed="${TRAP_DEBUG_TIME_END} - ${TRAP_DEBUG_TIME_START}"
     local time_elapsed="$(printf "%.6f" "$(bc <<<"${time_elapsed}")")"
     local time_elapsed=$(convert_time "${time_elapsed}")
     local date=$(date "+%H:%M:%S:${TRAP_DEBUG_TIME_END/*./}")
     
-    local end_time=(
-        $(prompt_rectangle "${date}" "${GC_33}")
-    )
-    local time_elapsed=(
-        $(prompt_rectangle "${time_elapsed}" "${GC_33}")
-    )
+    local time_wrapper="$(prompt_element "${date}" 1 "${GC_43}")"
+    local time_element="$(prompt_element "${date}" 0 "${GC_43}")"
+    
+    local elapsed_wrapper="$(prompt_element "${time_elapsed}" 1 "${GC_43}")"
+    local elapsed_element="$(prompt_element "${time_elapsed}" 0 "${GC_43}")"
 
     local output=(
-        "${end_time[0]} ${time_elapsed[0]}"
-        "${end_time[1]} ${time_elapsed[1]}"
-        "${end_time[2]} ${time_elapsed[2]}"
+        "${time_wrapper} ${elapsed_wrapper}"
+        "${time_element} ${elapsed_element}"
+        "${time_wrapper} ${elapsed_wrapper}"
     )
 
-    echo "$(array_join $'\n' "${output[@]}")"
+    echo "${output[*]}"
 
 }
 
 # wrap prompt element
-wrap_prompt_element() {
+prompt_element() {
 
-    local color_wrapper="${3:-"${GC_37}"}"
-    local color_element="${4:-"${GC_37}"}"
-    local middle="${color_wrapper}$(repeat_string "${#1}")${GC_END}"
-    symbols
-
-    case "${2-"middle"}" in
-        "top") 
-	    local left="${S_TOP_LEFT}"
-	    local right="${S_TOP_RIGHT}"
-	    ;;
-	"bottom") 
-	    local left="${S_BOTTOM_LEFT}"
-	    local right="${S_BOTTOM_RIGHT}"
-	    ;;
-        *) 
-	    local left="${S_VERTICAL}"
-	    local right="${S_VERTICAL}"
-            local middle="${color_element}${1}${GC_END}"
-	    ;;
-    esac
-
-    local left="${color_wrapper}${left}${GC_END}"
-    local right="${color_wrapper}${right}${GC_END}"
     
-    echo "${left}${middle}${right}"
+    local color_wrapper="${3:-"${GC_47}"}"
+    local color_element="${4:-"${GC_37}"}"
+    local space="${color_wrapper}  ${GC_END}"
+
+    if [[ "${2}" -eq 0 ]]; then
+        echo "  ${color_element}${1}${GC_END}  "
+    else
+        echo "${space}$(repeat_string "${#1}")${space}"
+    fi
+    
 
 }
-
-# get rectangle
-prompt_rectangle() {
-
-    local output=(   
-        "$(wrap_prompt_element "${1}" top "${2}")"
-        "$(wrap_prompt_element "${1}" middle "${2}")"
-        "$(wrap_prompt_element "${1}" bottom "${2}")"
-    ) 
-
-    echo "${output[@]}"
-
-}
-
 
 # generate the PS1 prompt
 get_shell_prompt_PS1() {
 
+    export IFS=$'\n'
+    
     local git_branch="$(get_current_branch)"
-    local git_branch=(
-        $(prompt_rectangle "${git_branch:-none}" "${GC_34}")
-    )
-    local current_directory=(
-        $(prompt_rectangle "${PWD}" "${GC_34}")
-    )
-    local hostname=(
-        $(prompt_rectangle "${HOSTNAME}" "${GC_35}")
-    )
-    local user=(
-        $(prompt_rectangle "${USER}" "${GC_36}")
-    )
-    local bash_version=(
-        $(prompt_rectangle "${BASH_VERSION}" "${GC_037}")
-    )
-    local current_tty=(
-        $(prompt_rectangle "${TTY_NAME//[!0-9]/}" "${GC_37}")
-    )
-    local jobs_r=(
-        $(prompt_rectangle "$(jobs -r | wc -l)" "${GC_32}")
-    )
-    local jobs_s=(
-        $(prompt_rectangle "$(jobs -s | wc -l)" "${GC_31}")
-    )
+    local git_branch="${git_branch:-none}"
+    
+    local git_branch_wrapper="$(prompt_element "${git_branch}" 1 "${GC_44}")"
+    local git_branch_element="$(prompt_element "${git_branch}" 0 "${GC_44}")"
+    
+    local directory_wrapper="$(prompt_element "${PWD}" 1 "${GC_44}")"
+    local directory_element="$(prompt_element "${PWD}" 0 "${GC_44}")"
+    
+    local hostname_wrapper="$(prompt_element "${HOSTNAME}" 1 "${GC_45}")"
+    local hostname_element="$(prompt_element "${HOSTNAME}" 0 "${GC_45}")"
+    
+    local user_wrapper="$(prompt_element "${USER}" 1 "${GC_46}")"
+    local user_element="$(prompt_element "${USER}" 0 "${GC_46}")"
 
-    local jobs_top="${current_tty[0]} ${jobs_r[0]} ${jobs_s[0]}"
-    local jobs_middle="${current_tty[1]} ${jobs_r[1]} ${jobs_s[1]}"
-    local jobs_bottom="${current_tty[2]} ${jobs_r[2]} ${jobs_s[2]}"
+    
+    local bash_wrapper="$(prompt_element "${BASH_VERSION}" 1 "${GC_047}")"
+    local bash_element="$(prompt_element "${BASH_VERSION}" 0 "${GC_047}")"
+    
+    local tty_wrapper="$(prompt_element "${TTY_NAME}" 1 "${GC_47}")"
+    local tty_element="$(prompt_element "${TTY_NAME}" 0 "${GC_47}")"
+   
+    local jobs_r="$(jobs -r | wc -l)"
+    local jobs_r_wrapper="$(prompt_element "${jobs_r}" 1 "${GC_42}")"
+    local jobs_r_element="$(prompt_element "${jobs_r}" 0 "${GC_42}")"
+
+    local jobs_s="$(jobs -s | wc -l)"
+    local jobs_s_wrapper="$(prompt_element "${jobs_s}" 1 "${GC_41}")"
+    local jobs_s_element="$(prompt_element "${jobs_s}" 0 "${GC_41}")"
+
+    local jobs_wrappers="${tty_wrapper} ${jobs_r_wrapper} ${jobs_s_wrapper}"
+    local jobs_elements="${tty_element} ${jobs_r_element} ${jobs_s_element}"
 
     local output=(
-        "${user[0]} ${hostname[0]} ${bash_version[0]}"
-	"${user[1]} ${hostname[1]} ${bash_version[1]}"
-	"${user[2]} ${hostname[2]} ${bash_version[2]}"
+        "${user_wrapper} ${hostname_wrapper} ${bash_wrapper}"
+	"${user_element} ${hostname_element} ${bash_element}"
+        "${user_wrapper} ${hostname_wrapper} ${bash_wrapper}"
 
-        "${git_branch[0]} ${current_directory[0]} ${jobs_top}"
-        "${git_branch[1]} ${current_directory[1]} ${jobs_middle}"
-        "${git_branch[2]} ${current_directory[2]} ${jobs_bottom}"
+        "${git_branch_wrapper} ${directory_wrapper} ${jobs_wrapper}"
+        "${git_branch_element} ${directory_element} ${jobs_element}"
+        "${git_branch_wrapper} ${directory_wrapper} ${jobs_wrapper}"
     )
     
-    echo "\n$(array_join $'\n' "${output[@]}")"
+    echo "\n${output[*]}"
 
 }
 

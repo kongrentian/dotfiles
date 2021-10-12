@@ -10,6 +10,7 @@ symbols() {
     S_BOTTOM_LEFT="└"
     S_BOTTOM_RIGHT="┘"
     S_TOP_MIDDLE="┰"
+    S_FULL="█"
 
 }
 
@@ -89,37 +90,6 @@ export_variables_bash_history() {
 
 }
 
-# colors
-export_variables_colors() {
-
-    export GC_30="$(color_get "1;30")"
-    export GC_030="$(color_get "0;30")"
-    
-    export GC_31="$(color_get "1;31")"
-    export GC_031="$(color_get "0;31")"
-    
-    export GC_32="$(color_get "1;32")"
-    export GC_032="$(color_get "0;32")"
-    
-    export GC_33="$(color_get "1;33")"
-    export GC_033="$(color_get "0;33")"
-    
-    export GC_34="$(color_get "1;34")"
-    export GC_034="$(color_get "0;34")"
-    
-    export GC_35="$(color_get "1;35")"
-    export GC_035="$(color_get "0;35")"
-    
-    export GC_36="$(color_get "1;36")"
-    export GC_036="$(color_get "0;36")"
-    
-    export GC_37="$(color_get "1;37")"
-    export GC_037="$(color_get "0;37")"
-    
-    export GC_END=$(color_end)
-
-}
-
 # other variables
 export_variables_others() {
 
@@ -149,3 +119,75 @@ export_variables_others() {
     export OPEN_SOURCE_CONTRIBUTOR=true
 
 }
+
+# colors
+export_variables_colors() {
+
+    export GC_30="$(color_get "1;30")"
+    export GC_030="$(color_get "0;30")"
+    
+    export GC_31="$(color_get "1;31")"
+    export GC_031="$(color_get "0;31")"
+    
+    export GC_32="$(color_get "1;32")"
+    export GC_032="$(color_get "0;32")"
+    
+    export GC_33="$(color_get "1;33")"
+    export GC_033="$(color_get "0;33")"
+    
+    export GC_34="$(color_get "1;34")"
+    export GC_034="$(color_get "0;34")"
+    
+    export GC_35="$(color_get "1;35")"
+    export GC_035="$(color_get "0;35")"
+    
+    export GC_36="$(color_get "1;36")"
+    export GC_036="$(color_get "0;36")"
+    
+    export GC_37="$(color_get "1;37")"
+    export GC_037="$(color_get "0;37")"
+    
+    export GC_40="$(color_get "1;40")"
+    export GC_040="$(color_get "0;40")"
+    export GC_540="$(color_get "48;5;0")"
+    export GC_0540="$(color_get "48;5;8")"
+    
+    export GC_41="$(color_get "1;41")"
+    export GC_041="$(color_get "0;41")"
+    export GC_541="$(color_get "48;5;1")"
+    export GC_0541="$(color_get "48;5;9")"
+    
+    export GC_42="$(color_get "1;42")"
+    export GC_042="$(color_get "0;42")"
+    export GC_542="$(color_get "48;5;2")"
+    export GC_0542="$(color_get "48;5;10")"
+    
+    export GC_43="$(color_get "1;43")"
+    export GC_043="$(color_get "0;43")"
+    export GC_543="$(color_get "48;5;3")"
+    export GC_0543="$(color_get "48;5;11")"
+    
+    export GC_44="$(color_get "1;44")"
+    export GC_044="$(color_get "0;44")"
+    export GC_544="$(color_get "48;5;4")"
+    export GC_0544="$(color_get "48;5;12")"
+    
+    export GC_45="$(color_get "1;45")"
+    export GC_045="$(color_get "0;45")"
+    export GC_545="$(color_get "48;5;5")"
+    export GC_0545="$(color_get "48;5;13")"
+    
+    export GC_46="$(color_get "1;46")"
+    export GC_046="$(color_get "0;46")"
+    export GC_546="$(color_get "48;5;6")"
+    export GC_0546="$(color_get "48;5;14")"
+    
+    export GC_47="$(color_get "1;47")"
+    export GC_047="$(color_get "0;47")"
+    export GC_547="$(color_get "48;5;7")"
+    export GC_0547="$(color_get "48;5;15")"
+    
+    export GC_END="$(color_end)"
+
+}
+
